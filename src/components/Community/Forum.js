@@ -2,30 +2,88 @@
 
 import { useState, useEffect } from 'react';
 
-const Forums = () => {
-  const [topics, setTopics] = useState([]);
+const Forum = () => {
+  const [forums, setForums] = useState([]);
+  const [newForumTitle, setNewForumTitle] = useState('');
+  const [newPostContent, setNewPostContent] = useState('');
+  const [selectedForum, setSelectedForum] = useState(null);
 
   useEffect(() => {
-    // Fetch forum topics from backend
-    setTopics([
-      { id: 1, title: 'Topic 1', content: 'This is the first topic.' },
-      { id: 2, title: 'Topic 2', content: 'This is the second topic.' },
+    // Fetch forums from backend
+    setForums([
+      { id: 1, title: 'General Discussion', posts: [{ content: 'Welcome to the forum!', author: 'User1' }] },
+      { id: 2, title: 'Music Releases', posts: [{ content: 'Check out my new song!', author: 'Artist1' }] },
     ]);
   }, []);
 
+  const handleCreateForum = () => {
+    // Logic to create a new forum
+    setForums([...forums, { id: forums.length + 1, title: newForumTitle, posts: [] }]);
+    setNewForumTitle('');
+  };
+
+  const handleCreatePost = () => {
+    // Logic to create a new post in the selected forum
+    const updatedForums = forums.map((forum) => {
+      if (forum.id === selectedForum.id) {
+        return { ...forum, posts: [...forum.posts, { content: newPostContent, author: 'CurrentUser' }] };
+      }
+      return forum;
+    });
+    setForums(updatedForums);
+    setNewPostContent('');
+  };
+
   return (
-    <div className="space-y-4 p-4 bg-white shadow rounded-lg">
-      <h2 className="text-2xl font-bold text-center">Community Forums</h2>
-      <ul>
-        {topics.map((topic) => (
-          <li key={topic.id} className="border-b py-2">
-            <h3 className="font-medium">{topic.title}</h3>
-            <p>{topic.content}</p>
-          </li>
-        ))}
-      </ul>
+    <div>
+      <h1 className="text-3xl font-bold mb-6">Forums</h1>
+      <div className="mb-4">
+        <label className="block text-sm font-medium text-gray-700">Create New Forum</label>
+        <input
+          type="text"
+          value={newForumTitle}
+          onChange={(e) => setNewForumTitle(e.target.value)}
+          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+        />
+        <button onClick={handleCreateForum} className="mt-2 px-4 py-2 bg-primary text-white rounded-md">
+          Create Forum
+        </button>
+      </div>
+      <div className="mb-4">
+        <label className="block text-sm font-medium text-gray-700">Forums</label>
+        <ul>
+          {forums.map((forum) => (
+            <li key={forum.id} onClick={() => setSelectedForum(forum)} className="cursor-pointer mb-2">
+              {forum.title}
+            </li>
+          ))}
+        </ul>
+      </div>
+      {selectedForum && (
+        <div className="mt-6">
+          <h2 className="text-2xl font-semibold mb-4">{selectedForum.title}</h2>
+          <ul className="mb-4">
+            {selectedForum.posts.map((post, index) => (
+              <li key={index} className="mb-2">
+                <strong>{post.author}:</strong> {post.content}
+              </li>
+            ))}
+          </ul>
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700">New Post</label>
+            <textarea
+              value={newPostContent}
+              onChange={(e) => setNewPostContent(e.target.value)}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+            ></textarea>
+            <button onClick={handleCreatePost} className="mt-2 px-4 py-2 bg-primary text-white rounded-md">
+              Post
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
-export default Forums;
+export default Forum;

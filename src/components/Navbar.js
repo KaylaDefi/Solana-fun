@@ -15,25 +15,13 @@ const Navbar = () => {
       <div className="collapse navbar-collapse" id="navbarNav">
         <ul className="navbar-nav">
           <li className="nav-item">
-            <Link className="nav-link" href="/?page=create-competition">Create Competition</Link>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link" href="/?page=donate">Donate</Link>
+            <Link className="nav-link" href="/?page=battle-of-the-bands">Battle of the Bands</Link>
           </li>
           <li className="nav-item">
             <Link className="nav-link" href="/?page=profile">Profile</Link>
           </li>
           <li className="nav-item">
-            <Link className="nav-link" href="/?page=upload-music">Upload Music</Link>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link" href="/?page=view-results">View Results</Link>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link" href="/?page=forum">Forum</Link>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link" href="/?page=announcements">Announcements</Link>
+            <Link className="nav-link" href="/?page=forums">Forums</Link>
           </li>
           <li className="nav-item">
             <Link className="nav-link" href="/?page=create-account">Create Account</Link>

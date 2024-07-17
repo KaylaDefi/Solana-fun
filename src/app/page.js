@@ -5,36 +5,40 @@ import Head from 'next/head';
 import FeaturedArtists from '../components/Home/FeaturedArtists';
 import OngoingCompetitions from '../components/Home/OngoingCompetitions';
 import CreateAccount from '../components/Home/CreateAccount';
-import Donate from '../components/Artist/Donate';
+import BattleOfTheBands from '../components/BattleOfTheBands';
+import CompetitionDetails from '../components/CompetitionDetails';
 import Profile from '../components/Artist/Profile';
-import UploadMusic from '../components/Artist/UploadMusic';
-import ViewResults from '../components/Voting/ViewResults';
-import Forums from '../components/Community/Forum';
-import Announcements from '../components/Community/Announcements';
+import Forum from '../components/Community/Forum';
 import UserHistory from '../components/UserHistory';
+import Donate from '../components/Artist/Donate';
+import UploadMusic from '../components/Artist/UploadMusic';
+import Announcements from '../components/Artist/Announcements';
 
 export default function Home() {
   const searchParams = useSearchParams();
   const page = searchParams.get('page');
+  const competitionId = searchParams.get('id');
 
   const renderComponent = () => {
     switch (page) {
       case 'create-account':
         return <CreateAccount />;
-      case 'donate':
-        return <Donate />;
+      case 'battle-of-the-bands':
+        return <BattleOfTheBands />;
+      case 'competition':
+        return <CompetitionDetails id={competitionId} />;
       case 'profile':
         return <Profile />;
-      case 'upload-music':
-        return <UploadMusic />;
-      case 'view-results':
-        return <ViewResults />;
-      case 'forums':
-        return <Forums />;
-      case 'announcements':
-        return <Announcements />;
+      case 'forum':
+        return <Forum />;
       case 'user-history':
         return <UserHistory />;
+      case 'donate':
+        return <Donate />;
+      case 'upload-music':
+        return <UploadMusic />;
+      case 'announcements':
+        return <Announcements />;
       default:
         return (
           <div>
