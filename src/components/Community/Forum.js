@@ -35,25 +35,25 @@ const Forum = () => {
   };
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold mb-6">Forums</h1>
+    <div className="bg-surface p-6 rounded-lg shadow-lg">
+      <h1 className="text-3xl font-bold text-accent mb-6">Forums</h1>
       <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">Create New Forum</label>
+        <label className="block text-sm font-medium text-gray-300">Create New Forum</label>
         <input
           type="text"
           value={newForumTitle}
           onChange={(e) => setNewForumTitle(e.target.value)}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+          className="mt-1 block w-full px-3 py-2 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm bg-background text-white"
         />
         <button onClick={handleCreateForum} className="mt-2 px-4 py-2 bg-primary text-white rounded-md">
           Create Forum
         </button>
       </div>
       <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">Forums</label>
+        <label className="block text-sm font-medium text-gray-300">Forums</label>
         <ul>
           {forums.map((forum) => (
-            <li key={forum.id} onClick={() => setSelectedForum(forum)} className="cursor-pointer mb-2">
+            <li key={forum.id} onClick={() => setSelectedForum(forum)} className="cursor-pointer mb-2 text-secondary">
               {forum.title}
             </li>
           ))}
@@ -61,20 +61,20 @@ const Forum = () => {
       </div>
       {selectedForum && (
         <div className="mt-6">
-          <h2 className="text-2xl font-semibold mb-4">{selectedForum.title}</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-accent">{selectedForum.title}</h2>
           <ul className="mb-4">
             {selectedForum.posts.map((post, index) => (
-              <li key={index} className="mb-2">
-                <strong>{post.author}:</strong> {post.content}
+              <li key={index} className="mb-2 text-gray-300">
+                <strong className="text-secondary">{post.author}:</strong> {post.content}
               </li>
             ))}
           </ul>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">New Post</label>
+            <label className="block text-sm font-medium text-gray-300">New Post</label>
             <textarea
               value={newPostContent}
               onChange={(e) => setNewPostContent(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+              className="mt-1 block w-full px-3 py-2 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm bg-background text-white"
             ></textarea>
             <button onClick={handleCreatePost} className="mt-2 px-4 py-2 bg-primary text-white rounded-md">
               Post

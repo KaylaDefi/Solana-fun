@@ -7,12 +7,24 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors: {
+        primary: '#ff007a', // Vibrant pink
+        secondary: '#00bcd4', // Cool cyan
+        background: '#1a1a1a', // Dark background
+        surface: '#2c2c2c', // Darker surface
+        accent: '#ffeb3b', // Bright yellow accent
+      },
+      fontFamily: {
+        sans: ['"Roboto Condensed"', 'sans-serif'], // Edgy, condensed font
+        mono: ['"Fira Code"', 'monospace'], // Monospaced font for code-like style
+      },
       backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        'cool-gradient': 'linear-gradient(135deg, #ff007a 0%, #00bcd4 100%)',
       },
     },
   },
   plugins: [],
 };
+

@@ -7,28 +7,28 @@ const Navbar = () => {
   const { connected } = useWallet();
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <Link className="navbar-brand" href="/">Music Platform</Link>
+    <nav className="navbar navbar-expand-lg navbar-dark bg-background text-white">
+      <Link className="navbar-brand text-primary font-bold" href="/">Music Platform</Link>
       <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span className="navbar-toggler-icon"></span>
       </button>
       <div className="collapse navbar-collapse" id="navbarNav">
         <ul className="navbar-nav">
           <li className="nav-item">
-            <Link className="nav-link" href="/?page=battle-of-the-bands">Battle of the Bands</Link>
+            <Link className="nav-link text-white" href="/?page=battle-of-the-bands">Battle of the Bands</Link>
           </li>
           <li className="nav-item">
-            <Link className="nav-link" href="/?page=profile">Profile</Link>
+            <Link className="nav-link text-white" href="/?page=profile">Profile</Link>
           </li>
           <li className="nav-item">
-            <Link className="nav-link" href="/?page=forum">Forum</Link>
+            <Link className="nav-link text-white" href="/?page=forum">Forum</Link>
           </li>
           <li className="nav-item">
-            <Link className="nav-link" href="/?page=create-account">Create Account</Link>
+            <Link className="nav-link text-white" href="/?page=create-account">Create Account</Link>
           </li>
           {connected && (
             <li className="nav-item">
-              <Link className="nav-link" href="/?page=user-history">My History</Link>
+              <Link className="nav-link text-white" href="/?page=user-history">My History</Link>
             </li>
           )}
         </ul>

@@ -5,7 +5,7 @@ import Announcements from './Announcements';
 
 const Profile = () => {
   return (
-    <div>
+    <div className="container">
       <h1 className="text-3xl font-bold mb-6">Artist Profile</h1>
       {/* Profile information here */}
       <Link href="/?page=donate" legacyBehavior>

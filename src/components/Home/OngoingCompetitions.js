@@ -1,29 +1,25 @@
 "use client";
 
-import { useEffect, useState } from 'react';
-
 const OngoingCompetitions = () => {
-  const [competitions, setCompetitions] = useState([]);
-
-  useEffect(() => {
-    // Fetch ongoing competitions from backend
-    setCompetitions([
-      { id: 1, name: 'Competition 1', description: 'Description of Competition 1' },
-      { id: 2, name: 'Competition 2', description: 'Description of Competition 2' },
-    ]);
-  }, []);
+  const competitions = [
+    { id: 1, name: 'Competition 1', description: 'Description of Competition 1' },
+    { id: 2, name: 'Competition 2', description: 'Description of Competition 2' },
+    { id: 3, name: 'Competition 3', description: 'Description of Competition 3' },
+  ];
 
   return (
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold text-center">Ongoing Competitions</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="bg-surface p-6 rounded-lg shadow-lg mt-6">
+      <h2 className="text-2xl font-bold text-accent mb-4">Ongoing Competitions</h2>
+      <ul className="list-none">
         {competitions.map((competition) => (
-          <div key={competition.id} className="p-4 bg-white shadow rounded-lg">
-            <h3 className="text-xl font-bold">{competition.name}</h3>
-            <p>{competition.description}</p>
-          </div>
+          <li key={competition.id} className="mb-4">
+            <div className="bg-background p-4 rounded-lg shadow-md hover:bg-surface transition">
+              <h3 className="text-xl font-semibold text-secondary">{competition.name}</h3>
+              <p className="text-gray-300">{competition.description}</p>
+            </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 };
