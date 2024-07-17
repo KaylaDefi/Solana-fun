@@ -21,7 +21,7 @@ const Navbar = () => {
             <Link className="nav-link" href="/?page=profile">Profile</Link>
           </li>
           <li className="nav-item">
-            <Link className="nav-link" href="/?page=forums">Forums</Link>
+            <Link className="nav-link" href="/?page=forum">Forum</Link>
           </li>
           <li className="nav-item">
             <Link className="nav-link" href="/?page=create-account">Create Account</Link>
