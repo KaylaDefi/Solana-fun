@@ -2,6 +2,7 @@
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from '../components/Navbar';
+import ConnectWallet from '../components/ConnectWallet';
 import { WalletProviderContext } from '../utils/WalletContext';
 
 export default function RootLayout({ children }) {
@@ -33,6 +34,7 @@ export default function RootLayout({ children }) {
       <body>
         <WalletProviderContext>
           <Navbar />
+          <ConnectWallet />
           <div className="container mt-4">
             {children}
           </div>

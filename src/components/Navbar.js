@@ -1,8 +1,11 @@
 "use client";
 
 import Link from 'next/link';
+import { useWallet } from '@solana/wallet-adapter-react';
 
 const Navbar = () => {
+  const { connected } = useWallet();
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <Link className="navbar-brand" href="/">Music Platform</Link>
@@ -32,6 +35,14 @@ const Navbar = () => {
           <li className="nav-item">
             <Link className="nav-link" href="/?page=announcements">Announcements</Link>
           </li>
+          <li className="nav-item">
+            <Link className="nav-link" href="/?page=create-account">Create Account</Link>
+          </li>
+          {connected && (
+            <li className="nav-item">
+              <Link className="nav-link" href="/?page=user-history">My History</Link>
+            </li>
+          )}
         </ul>
       </div>
     </nav>
