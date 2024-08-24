@@ -21,10 +21,12 @@ module.exports = {
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-        'cool-gradient': 'linear-gradient(135deg, #ff007a 0%, #00bcd4 100%)',
+      },
+      spacing: {
+        '128': '32rem', // Custom spacing for large padding/margin
+        '144': '36rem',
       },
     },
   },
   plugins: [],
 };
-

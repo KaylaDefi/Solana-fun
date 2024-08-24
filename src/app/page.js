@@ -8,11 +8,12 @@ import CreateAccount from '../components/Home/CreateAccount';
 import BattleOfTheBands from '../components/BattleOfTheBands';
 import CompetitionDetails from '../components/CompetitionDetails';
 import Profile from '../components/Artist/Profile';
-import Forum from '../components/Community/Forum'; // Ensure correct import
+import Forum from '../components/Community/Forum'; 
 import UserHistory from '../components/UserHistory';
 import Donate from '../components/Artist/Donate';
 import UploadMusic from '../components/Artist/UploadMusic';
 import Announcements from '../components/Artist/Announcements';
+
 
 export default function Home() {
   const searchParams = useSearchParams();
@@ -29,7 +30,7 @@ export default function Home() {
         return <CompetitionDetails id={competitionId} />;
       case 'profile':
         return <Profile />;
-      case 'forum': // Use singular form here
+      case 'forum': 
         return <Forum />; 
       case 'user-history':
         return <UserHistory />;

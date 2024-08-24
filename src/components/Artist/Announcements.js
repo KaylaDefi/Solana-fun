@@ -14,11 +14,11 @@ const Announcements = () => {
   }, []);
 
   return (
-    <div className="space-y-4 p-4 bg-white shadow rounded-lg">
+    <div className="announcements space-y-4 p-4 shadow rounded-lg">
       <h2 className="text-2xl font-bold text-center">Announcements</h2>
       <ul>
         {announcements.map((announcement) => (
-          <li key={announcement.id} className="border-b py-2">
+          <li key={announcement.id} className="border-b border-gray-700 py-2">
             <h3 className="font-medium">{announcement.title}</h3>
             <p>{announcement.content}</p>
           </li>
