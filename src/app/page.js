@@ -42,10 +42,12 @@ export default function Home() {
         return <Announcements />;
       default:
         return (
-          <div>
-            <h1 className="text-3xl font-bold text-center mb-6">Welcome to the Music Platform</h1>
-            <FeaturedArtists />
-            <OngoingCompetitions />
+          <div className="landing-page">
+            <div className="landing-page-content">
+              <h1 className="text-3xl font-bold text-center mb-6">Welcome to the Music Platform</h1>
+              <FeaturedArtists />
+              <OngoingCompetitions />
+            </div>
           </div>
         );
     }

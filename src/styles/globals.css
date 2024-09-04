@@ -1,6 +1,45 @@
-body {
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+/* Reset and Global Styles */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
   font-family: 'Roboto', sans-serif;
-  background-color: #0d0d0d !important; 
+  background-color: #0d0d0d !important; /* Ensure dark background */
+  color: #ffffff !important; /* Ensure text is white */
+}
+
+.landing-page {
+  background-image: url('/images/redandblack.jpeg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin: 0;
+  padding: 0;
+}
+
+.landing-page-content {
+  background-color: rgba(0, 0, 0, 0.7);
+  text-align: center;
+}
+
+
+h1, p {
+  margin: 0;
+  padding: 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Text shadow for readability */
+}
+
+.landing-page-content {
+  background-color: rgba(0, 0, 0, 0.7); /* Muted background for text area */
+  padding: 2rem;
+  border-radius: 8px;
+  text-align: center;
 }
 
 a {
@@ -26,25 +65,21 @@ button:hover {
   color: #ffffff !important; 
 }
 
-
 .navbar {
   background-color: #1a1a1a !important; 
 }
 
 .navbar-brand, .nav-link {
-  color: #f2f2f2 !important;
+  color: #f2f2f2 !important; /* Ensure navbar text is light */
 } 
 
 .nav-link:hover {
   color: #e60000 !important; 
-
-.container {
-  padding-top: 2rem !important;
 }
 
 .announcements {
   background-color: #2c2c2c !important; 
-  color: #f2f2f2 !important; 
+  color: #f2f2f2 !important; /* Ensure announcements text is light */
   padding: 1rem !important; 
   border-radius: 4px !important; 
 }

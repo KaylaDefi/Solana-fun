@@ -1,10 +1,16 @@
 "use client";
 
 import Link from 'next/link';
-import { useWallet } from '@solana/wallet-adapter-react';
+import { useEffect } from 'react';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Ensure Bootstrap JS is loaded, including Popper.js
 
 const Navbar = () => {
-  const { connected } = useWallet();
+  useEffect(() => {
+    // Check if window or document is available (client-side)
+    if (typeof window !== "undefined") {
+      require("bootstrap/dist/js/bootstrap.bundle.min.js");
+    }
+  }, []);
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-background text-white">
@@ -27,11 +33,6 @@ const Navbar = () => {
             <li className="nav-item">
               <Link className="nav-link text-white" href="/?page=create-account">Create Account</Link>
             </li>
-            {connected && (
-              <li className="nav-item">
-                <Link className="nav-link text-white" href="/?page=user-history">My History</Link>
-              </li>
-            )}
           </ul>
         </div>
       </div>
