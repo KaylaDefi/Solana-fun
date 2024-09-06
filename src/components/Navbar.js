@@ -6,9 +6,8 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Ensure Bootstrap JS is lo
 
 const Navbar = () => {
   useEffect(() => {
-    // Check if window or document is available (client-side)
     if (typeof window !== "undefined") {
-      require("bootstrap/dist/js/bootstrap.bundle.min.js");
+      require('bootstrap/dist/js/bootstrap.bundle.min.js');
     }
   }, []);
 
@@ -32,6 +31,10 @@ const Navbar = () => {
             </li>
             <li className="nav-item">
               <Link className="nav-link text-white" href="/?page=create-account">Create Account</Link>
+            </li>
+            {/* Sign In Link */}
+            <li className="nav-item">
+              <Link className="nav-link text-white" href="/login">Sign In</Link> {/* Link to login page */}
             </li>
           </ul>
         </div>

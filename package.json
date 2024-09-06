@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "concurrently \"npm run dev:front\" \"npm run dev:back\"",
+    "dev:front": "next dev",
+    "dev:back": "cd server && npm run dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -19,12 +21,13 @@
     "@solana/wallet-adapter-wallets": "^0.19.32",
     "@solana/web3.js": "^1.95.0",
     "bootstrap": "^5.3.3",
-    "next": "14.2.5",
+    "next": "^14.2.8",
     "pino-pretty": "^11.2.1",
     "react": "^18",
     "react-dom": "^18"
   },
   "devDependencies": {
+    "concurrently": "^8.2.2",
     "eslint": "^8",
     "eslint-config-next": "14.2.5",
     "postcss": "^8",
