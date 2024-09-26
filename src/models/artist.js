@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt'); // To hash passwords
+import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
 
 const artistSchema = new mongoose.Schema({
   name: {
@@ -13,7 +13,7 @@ const artistSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-    unique: true, // Email should be unique
+    unique: true,
   },
   password: {
     type: String,
@@ -21,7 +21,7 @@ const artistSchema = new mongoose.Schema({
   },
   profilePictureUrl: {
     type: String,
-    required: true,
+    default: '',
   },
   solanaWallet: {
     type: String, // This will store the artist's public Solana wallet address
@@ -41,4 +41,12 @@ artistSchema.pre('save', async function (next) {
   next();
 });
 
-module.exports = mongoose.model('Artist', artistSchema);
+// Helper method to compare hashed passwords
+artistSchema.methods.comparePassword = async function (candidatePassword) {
+  return await bcrypt.compare(candidatePassword, this.password);
+};
+
+// Prevent Overwriting the existing model
+const Artist = mongoose.models.Artist || mongoose.model('Artist', artistSchema);
+
+export default Artist;

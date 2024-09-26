@@ -7,7 +7,6 @@ const BattleOfTheBands = () => {
   const [competitions, setCompetitions] = useState([]);
 
   useEffect(() => {
-    // Fetch competitions from backend
     setCompetitions([
       { id: 1, name: 'Competition 1', description: 'Description of Competition 1', status: 'open' },
       { id: 2, name: 'Competition 2', description: 'Description of Competition 2', status: 'ongoing' },

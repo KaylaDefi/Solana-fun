@@ -1,7 +1,20 @@
 import Announcements from '../../../components/Artist/Announcements';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import jwt_decode from 'jwt-decode'; // To decode the JWT and verify the artist
 
 const ArtistProfileView = ({ artist }) => {
+  const [loggedInArtistId, setLoggedInArtistId] = useState(null);
+
+  useEffect(() => {
+    // Check if the JWT token exists and decode it
+    const token = localStorage.getItem('token');
+    if (token) {
+      const decodedToken = jwt_decode(token);
+      setLoggedInArtistId(decodedToken.artistId);
+    }
+  }, []);
+
   if (!artist) {
     return <div>Artist not found</div>;
   }
@@ -23,10 +36,12 @@ const ArtistProfileView = ({ artist }) => {
         <Announcements />
       </div>
 
-      {/* Add an option to update artist profile */}
-      <Link href={`/artist/${artist._id}/edit`} legacyBehavior>
-        <a className="btn btn-secondary mb-4">Update Artist Profile</a>
-      </Link>
+      {/* Show the Update Profile link only for the logged-in artist */}
+      {loggedInArtistId === artist._id && (
+        <Link href={`/artist/${artist._id}/edit`} legacyBehavior>
+          <a className="btn btn-secondary mb-4">Update Artist Profile</a>
+        </Link>
+      )}
     </div>
   );
 };
@@ -36,22 +51,16 @@ export async function getServerSideProps({ params }) {
   try {
     const res = await fetch(`http://localhost:5001/api/artist/${params.id}`);
 
-    // Check if the response is OK (status code 200–299)
     if (!res.ok) {
       throw new Error(`Failed to fetch artist with ID: ${params.id}`);
     }
 
-    // Parse the response as JSON
     const artist = await res.json();
-
     return { props: { artist } };
   } catch (error) {
     console.error('Error fetching artist:', error);
-
-    // Return `artist: null` if there's an error
     return { props: { artist: null } };
   }
 }
-
 
 export default ArtistProfileView;

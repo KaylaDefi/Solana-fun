@@ -5,20 +5,19 @@ import Head from 'next/head';
 import FeaturedArtists from '../components/Home/FeaturedArtists';
 import OngoingCompetitions from '../components/Home/OngoingCompetitions';
 import CreateAccount from '../components/Home/CreateAccount';
-import BattleOfTheBands from '../components/BattleOfTheBands';
-import CompetitionDetails from '../components/CompetitionDetails';
+import BattleOfTheBands from '../components/Voting/BattleOfTheBands';
+import CompetitionDetails from '../components/Voting/CompetitionDetails';
 import Profile from '../components/Artist/Profile';
-import Forum from '../components/Community/Forum'; 
-import UserHistory from '../components/UserHistory';
+import Forum from '../components/Community/Forum';
+import UserHistory from '../components/User/UserHistory';
 import Donate from '../components/Artist/Donate';
 import UploadMusic from '../components/Artist/UploadMusic';
 import Announcements from '../components/Artist/Announcements';
 
-
 export default function Home() {
   const searchParams = useSearchParams();
   const page = searchParams.get('page');
-  const competitionId = searchParams.get('id');
+  const competitionId = searchParams.get('id');  // Used for competition details
 
   const renderComponent = () => {
     switch (page) {
@@ -30,8 +29,8 @@ export default function Home() {
         return <CompetitionDetails id={competitionId} />;
       case 'profile':
         return <Profile />;
-      case 'forum': 
-        return <Forum />; 
+      case 'forum':
+        return <Forum />;
       case 'user-history':
         return <UserHistory />;
       case 'donate':

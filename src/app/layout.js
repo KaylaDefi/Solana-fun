@@ -2,8 +2,8 @@
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/globals.css';
-import Navbar from '../components/Navbar';
-import ConnectWallet from '../components/ConnectWallet';
+import Navbar from '../components/shared/Navbar';
+import ConnectWallet from '../components/shared/ConnectWallet';
 import { WalletProviderContext } from '../utils/WalletContext';
 
 export default function RootLayout({ children }) {

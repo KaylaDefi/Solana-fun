@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 
@@ -7,13 +5,16 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const router = useRouter();
 
-  const handleLogin = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+    setSuccess('');
 
     try {
-      const response = await fetch('/api/login', {
+      const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -21,35 +22,38 @@ const Login = () => {
         body: JSON.stringify({ email, password }),
       });
 
-      if (!response.ok) {
+      if (response.ok) {
         const data = await response.json();
-        setError(data.message || 'Login failed. Please try again.');
-        return;
+        setSuccess('Login successful!');
+        localStorage.setItem('token', data.token); // Store JWT token
+
+        router.push(`/artist/${data.artistId}`);
+      } else {
+        try {
+          const errorData = await response.json();
+          setError(errorData.message || 'Login failed');
+        } catch {
+          setError('Login failed, and the server response is invalid.');
+        }
       }
-
-      const data = await response.json();
-      console.log('Login successful:', data);
-
-      // Redirect the user to their profile page after successful login
-      router.push(`/artist/${data.artistId}`);
     } catch (err) {
-      console.error('Error logging in:', err);
-      setError('An error occurred while logging in. Please try again later.');
+      setError('An error occurred during login.');
     }
   };
 
   return (
     <div className="container">
-      <h1 className="text-3xl font-bold mb-6">Sign In</h1>
+      <h1 className="text-3xl font-bold mb-6">Login</h1>
       {error && <p className="text-red-500">{error}</p>}
-      <form onSubmit={handleLogin}>
+      {success && <p className="text-green-500">{success}</p>}
+      <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">Email</label>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
             required
           />
         </div>
@@ -59,11 +63,13 @@ const Login = () => {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
             required
           />
         </div>
-        <button type="submit" className="px-4 py-2 bg-primary text-white rounded-md">Sign In</button>
+        <button type="submit" className="px-4 py-2 bg-primary text-white rounded-md">
+          Login
+        </button>
       </form>
     </div>
   );

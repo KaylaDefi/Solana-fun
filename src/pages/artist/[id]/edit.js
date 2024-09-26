@@ -2,11 +2,19 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 
 const ArtistProfileEdit = ({ artist }) => {
+  const router = useRouter();
+
+  // Check if artist is undefined
+  if (!artist) {
+    return <div>Error: Artist not found or failed to load.</div>;  // Graceful error handling
+  }
+
   const [name, setName] = useState(artist.name);
   const [bio, setBio] = useState(artist.bio);
+  const [solanaWallet, setSolanaWallet] = useState(artist.solanaWallet || '');
+  const [profilePicture, setProfilePicture] = useState(null);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -14,12 +22,19 @@ const ArtistProfileEdit = ({ artist }) => {
     setSuccess('');
 
     try {
-      const response = await fetch(`/api/artist/${artist._id}/profile`, {
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('bio', bio);
+      formData.append('solanaWallet', solanaWallet);
+
+      if (profilePicture) {
+        formData.append('profilePicture', profilePicture);
+      }
+
+      const response = await fetch(`/api/artist/${artist._id}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name, bio }),
+        body: formData,
+        credentials: 'include',  // Include cookies with the request
       });
 
       if (response.ok) {
@@ -38,7 +53,7 @@ const ArtistProfileEdit = ({ artist }) => {
       <h1 className="text-3xl font-bold mb-6">Edit Profile</h1>
       {error && <p className="text-red-500">{error}</p>}
       {success && <p className="text-green-500">{success}</p>}
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} encType="multipart/form-data">
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">Name</label>
           <input
@@ -56,30 +71,62 @@ const ArtistProfileEdit = ({ artist }) => {
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
           ></textarea>
         </div>
-        <button type="submit" className="px-4 py-2 bg-primary text-white rounded-md">Save</button>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">Solana Wallet Address</label>
+          <input
+            type="text"
+            value={solanaWallet}
+            onChange={(e) => setSolanaWallet(e.target.value)}
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">Upload Profile Picture</label>
+          <input
+            type="file"
+            onChange={(e) => setProfilePicture(e.target.files[0])}
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+          />
+        </div>
+        <button type="submit" className="px-4 py-2 bg-primary text-white rounded-md">
+          Save
+        </button>
       </form>
     </div>
   );
 };
 
-// Fetch artist data from the server-side for editing purposes
-export async function getServerSideProps({ params }) {
-  try {
-    const res = await fetch(`http://localhost:5001/api/artist/${params.id}`);
+// Fetch artist data from server-side
+export async function getServerSideProps({ params, req }) {
+  const token = req.cookies.token;
 
-    // Check if the response is OK (status code 200–299)
-    if (!res.ok) {
-      throw new Error(`Failed to fetch artist with ID: ${params.id}`);
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
+  const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3000';  // Use the correct base URL
+
+  try {
+    const response = await fetch(`${apiUrl}/api/artist/${params.id}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch artist');
     }
 
-    // Parse the response as JSON
-    const artist = await res.json();
+    const artist = await response.json();
 
-    return { props: { artist } };
+    return { props: { artist: artist || null } };
   } catch (error) {
     console.error('Error fetching artist:', error);
-
-    // Return `artist: null` if there's an error
     return { props: { artist: null } };
   }
 }
