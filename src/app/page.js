@@ -4,10 +4,10 @@ import { useSearchParams } from 'next/navigation';
 import Head from 'next/head';
 import FeaturedArtists from '../components/Home/FeaturedArtists';
 import OngoingCompetitions from '../components/Home/OngoingCompetitions';
-import CreateAccount from '../components/Home/CreateAccount';
+import CreateAccount from '../pages/artist/create-account';
 import BattleOfTheBands from '../components/Voting/BattleOfTheBands';
 import CompetitionDetails from '../components/Voting/CompetitionDetails';
-import Profile from '../components/Artist/Profile';
+import Profile from '../components/Artist/ArtistActions';
 import Forum from '../components/Community/Forum';
 import UserHistory from '../components/User/UserHistory';
 import Donate from '../components/Artist/Donate';
@@ -17,7 +17,7 @@ import Announcements from '../components/Artist/Announcements';
 export default function Home() {
   const searchParams = useSearchParams();
   const page = searchParams.get('page');
-  const competitionId = searchParams.get('id');  // Used for competition details
+  const competitionId = searchParams.get('id'); 
 
   const renderComponent = () => {
     switch (page) {

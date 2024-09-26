@@ -4,9 +4,8 @@ import { useRouter } from 'next/router';
 const ArtistProfileEdit = ({ artist }) => {
   const router = useRouter();
 
-  // Check if artist is undefined
   if (!artist) {
-    return <div>Error: Artist not found or failed to load.</div>;  // Graceful error handling
+    return <div>Error: Artist not found or failed to load.</div>;  
   }
 
   const [name, setName] = useState(artist.name);
@@ -34,7 +33,7 @@ const ArtistProfileEdit = ({ artist }) => {
       const response = await fetch(`/api/artist/${artist._id}`, {
         method: 'PUT',
         body: formData,
-        credentials: 'include',  // Include cookies with the request
+        credentials: 'include', 
       });
 
       if (response.ok) {
@@ -109,7 +108,7 @@ export async function getServerSideProps({ params, req }) {
     };
   }
 
-  const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3000';  // Use the correct base URL
+  const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3000'; 
 
   try {
     const response = await fetch(`${apiUrl}/api/artist/${params.id}`, {

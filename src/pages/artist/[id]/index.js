@@ -1,20 +1,9 @@
 import Announcements from '../../../components/Artist/Announcements';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import jwt_decode from 'jwt-decode'; // To decode the JWT and verify the artist
+import { useState } from 'react';
+import jwt from 'jsonwebtoken';
 
-const ArtistProfileView = ({ artist }) => {
-  const [loggedInArtistId, setLoggedInArtistId] = useState(null);
-
-  useEffect(() => {
-    // Check if the JWT token exists and decode it
-    const token = localStorage.getItem('token');
-    if (token) {
-      const decodedToken = jwt_decode(token);
-      setLoggedInArtistId(decodedToken.artistId);
-    }
-  }, []);
-
+const ArtistProfileView = ({ artist, loggedInArtistId }) => {
   if (!artist) {
     return <div>Artist not found</div>;
   }
@@ -36,7 +25,7 @@ const ArtistProfileView = ({ artist }) => {
         <Announcements />
       </div>
 
-      {/* Show the Update Profile link only for the logged-in artist */}
+      {/* Only show the "Update Artist Profile" button if the logged-in user is the artist */}
       {loggedInArtistId === artist._id && (
         <Link href={`/artist/${artist._id}/edit`} legacyBehavior>
           <a className="btn btn-secondary mb-4">Update Artist Profile</a>
@@ -46,20 +35,48 @@ const ArtistProfileView = ({ artist }) => {
   );
 };
 
-// Fetch artist data from an API or server-side
-export async function getServerSideProps({ params }) {
-  try {
-    const res = await fetch(`http://localhost:5001/api/artist/${params.id}`);
+// Fetch artist data from server-side and handle authentication with JWT from cookies
+export async function getServerSideProps({ req, params }) {
+  const token = req.cookies.token;  // Access token from the cookie
 
+  // If no token is available, redirect to login
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
+  try {
+    // Verify JWT token
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+
+    // Fetch artist data from your API or database using the artist ID from the URL params
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/artist/${params.id}`);
     if (!res.ok) {
       throw new Error(`Failed to fetch artist with ID: ${params.id}`);
     }
 
     const artist = await res.json();
-    return { props: { artist } };
+
+    return {
+      props: {
+        artist,
+        loggedInArtistId: decodedToken.artistId,  // Pass the logged-in artist's ID to the component
+      },
+    };
   } catch (error) {
-    console.error('Error fetching artist:', error);
-    return { props: { artist: null } };
+    console.error('Error fetching artist or verifying token:', error);
+
+    // If token is invalid or expired, redirect to login
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
   }
 }
 

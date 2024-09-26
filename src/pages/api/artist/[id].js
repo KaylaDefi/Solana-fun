@@ -2,20 +2,18 @@ import multer from 'multer';
 import { S3Client } from '@aws-sdk/client-s3';
 import { Upload } from '@aws-sdk/lib-storage';
 import path from 'path';
-import Artist from '../../../models/artist';  // Adjust the path to your models
+import Artist from '../../../models/artist';  
 import { connectToDatabase } from '../../../lib/db';
-import { verifyToken } from '../../../lib/authMiddleware';  // Import the verifyToken helper
+import { verifyToken } from '../../../lib/authMiddleware';  
 
-// Set up multer for file handling
 const upload = multer({ storage: multer.memoryStorage() });
 
 export const config = {
   api: {
-    bodyParser: false,  // Disable built-in body parser to handle file uploads manually
+    bodyParser: false,  
   },
 };
 
-// S3 Client setup
 const s3 = new S3Client({
   region: process.env.AWS_REGION,
   credentials: {
@@ -25,17 +23,16 @@ const s3 = new S3Client({
 });
 
 export default async function handler(req, res) {
-  await connectToDatabase();  // Connect to MongoDB
+  await connectToDatabase(); 
 
-  // Handle GET request to fetch artist data
   if (req.method === 'GET') {
     try {
-      const decodedToken = verifyToken(req);  // Verify token using the helper
-      console.log('Decoded Token:', decodedToken); // Log the decoded token
-      console.log('Requested Artist ID:', req.query.id); // Log the artist ID being queried
+      const decodedToken = verifyToken(req);  
+      console.log('Decoded Token:', decodedToken); 
+      console.log('Requested Artist ID:', req.query.id); 
       
       const artist = await Artist.findById(req.query.id);
-      console.log('Found Artist:', artist); // Log the artist object if found
+      console.log('Found Artist:', artist);
       
       if (!artist) {
         return res.status(404).json({ message: 'Artist not found' });
@@ -52,8 +49,6 @@ export default async function handler(req, res) {
     }
   }
   
-
-  // Handle PUT request to update artist profile
   else if (req.method === 'PUT') {
     upload.single('profilePicture')(req, {}, async (err) => {
       if (err) {
@@ -61,7 +56,7 @@ export default async function handler(req, res) {
       }
 
       try {
-        const decodedToken = verifyToken(req);  // Use the imported verifyToken function
+        const decodedToken = verifyToken(req);  
 
         if (decodedToken.artistId !== req.query.id) {
           return res.status(403).json({ message: 'Unauthorized' });
@@ -71,14 +66,8 @@ export default async function handler(req, res) {
         if (!artist) {
           return res.status(404).json({ message: 'Artist not found' });
         }
-
-        // Parsing body values from formData (sent via the client)
         const { name, bio, solanaWallet } = req.body;
-
-        // Build update object with optional fields
         const updateData = { name, bio, solanaWallet };
-
-        // Handle profile picture upload if provided
         if (req.file) {
           const uploadParams = {
             Bucket: process.env.S3_BUCKET_NAME,
@@ -92,12 +81,10 @@ export default async function handler(req, res) {
           });
 
           const s3Result = await parallelUploadS3.done();
-          updateData.profilePictureUrl = s3Result.Location;  // Add profile picture URL to update
+          updateData.profilePictureUrl = s3Result.Location;  
         }
 
-        // Update the artist document in MongoDB
         const updatedArtist = await Artist.findByIdAndUpdate(req.query.id, updateData, { new: true });
-
         res.status(200).json({
           message: 'Profile updated successfully',
           artist: updatedArtist,

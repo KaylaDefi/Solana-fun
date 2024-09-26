@@ -1,13 +1,11 @@
-// src/components/Artist/Profile.js
 "use client";
 
 import Link from 'next/link';
 import Announcements from './Announcements';
 
-const Profile = () => {
+const ArtistActions = () => {
   return (
     <div className="container">
-      <h1 className="text-3xl font-bold mb-6">Artist Profile</h1>
       <Link href="/?page=donate" legacyBehavior>
         <a className="btn btn-primary mb-4">Donate</a>
       </Link>
@@ -22,4 +20,5 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default ArtistActions;
+

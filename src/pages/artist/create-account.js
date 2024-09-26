@@ -26,8 +26,8 @@ const CreateAccount = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, bio, email, password }),  // Profile picture is handled elsewhere
-        credentials: 'include',  // Include cookies with the request
+        body: JSON.stringify({ name, bio, email, password }),  
+        credentials: 'include',  
       });
 
       if (!response.ok) {
@@ -37,7 +37,7 @@ const CreateAccount = () => {
       }
 
       const data = await response.json();
-      setArtistId(data.artist._id);  // Store the newly created artist's ID
+      setArtistId(data.artist._id);  
       setSuccess('Account created successfully! You can now update your artist profile.');
     } catch (err) {
       console.error('API error:', err);
@@ -57,7 +57,7 @@ const CreateAccount = () => {
         <div>
           <p>Your artist account has been created successfully!</p>
           <button
-            onClick={() => router.push(`/artist/${artistId}/edit`)}  // Redirect to edit page when clicked
+            onClick={() => router.push(`/artist/${artistId}/edit`)}  
             className="px-4 py-2 bg-primary text-white rounded-md"
           >
             Update Artist Profile

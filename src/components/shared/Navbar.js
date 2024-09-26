@@ -24,17 +24,13 @@ const Navbar = () => {
               <Link className="nav-link text-white" href="/?page=battle-of-the-bands">Battle of the Bands</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link text-white" href="/?page=profile">Profile</Link>
-            </li>
-            <li className="nav-item">
               <Link className="nav-link text-white" href="/?page=forum">Forum</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link text-white" href="/?page=create-account">Create Account</Link>
+              <Link className="nav-link text-white" href="/artist/create-account">Create Account</Link>
             </li>
-            {/* Sign In Link */}
             <li className="nav-item">
-              <Link className="nav-link text-white" href="/login">Sign In</Link> {/* Link to login page */}
+              <Link className="nav-link text-white" href="/artist/login">Artist Login</Link> 
             </li>
           </ul>
         </div>

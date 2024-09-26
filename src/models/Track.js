@@ -12,11 +12,11 @@ const trackSchema = new mongoose.Schema({
   fileUrl: {
     type: String,
     required: true,
-  }, // S3 URL where the file is stored
+  }, 
   fileName: {
     type: String,
     required: true,
-  }, // S3 key or name of the file
+  }, 
   uploadDate: {
     type: Date,
     default: Date.now,
