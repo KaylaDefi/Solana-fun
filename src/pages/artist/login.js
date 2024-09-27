@@ -20,21 +20,18 @@ const Login = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email, password }),
+        credentials: 'include', // Ensures cookies are included
       });
 
       if (response.ok) {
         const data = await response.json();
         setSuccess('Login successful!');
-        localStorage.setItem('token', data.token); // Store JWT token
-
-        router.push(`/artist/${data.artistId}`);
+        
+        // Redirect to the dashboard after login
+        router.push(`/artist/dashboard`);
       } else {
-        try {
-          const errorData = await response.json();
-          setError(errorData.message || 'Login failed');
-        } catch {
-          setError('Login failed, and the server response is invalid.');
-        }
+        const errorData = await response.json();
+        setError(errorData.message || 'Login failed');
       }
     } catch (err) {
       setError('An error occurred during login.');

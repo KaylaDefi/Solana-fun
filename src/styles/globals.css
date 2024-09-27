@@ -15,7 +15,7 @@ html, body {
 }
 
 .landing-page {
-  background-image: url('/images/redandblack.jpeg');
+  background-image: url('../public/images/redandblack.jpeg');
   background-size: cover;
   background-repeat: no-repeat;
   margin: 0;

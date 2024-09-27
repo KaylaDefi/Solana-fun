@@ -1,9 +1,19 @@
 import Announcements from '../../../components/Artist/Announcements';
 import Link from 'next/link';
-import { useState } from 'react';
-import jwt from 'jsonwebtoken';
+import { useState, useEffect } from 'react';
+import jwt_decode from 'jwt-decode';
 
-const ArtistProfileView = ({ artist, loggedInArtistId }) => {
+const ArtistProfileView = ({ artist }) => {
+  const [loggedInArtistId, setLoggedInArtistId] = useState(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const decodedToken = jwt_decode(token);
+      setLoggedInArtistId(decodedToken.artistId);
+    }
+  }, []);
+
   if (!artist) {
     return <div>Artist not found</div>;
   }
@@ -25,7 +35,6 @@ const ArtistProfileView = ({ artist, loggedInArtistId }) => {
         <Announcements />
       </div>
 
-      {/* Only show the "Update Artist Profile" button if the logged-in user is the artist */}
       {loggedInArtistId === artist._id && (
         <Link href={`/artist/${artist._id}/edit`} legacyBehavior>
           <a className="btn btn-secondary mb-4">Update Artist Profile</a>
@@ -35,25 +44,22 @@ const ArtistProfileView = ({ artist, loggedInArtistId }) => {
   );
 };
 
-// Fetch artist data from server-side and handle authentication with JWT from cookies
-export async function getServerSideProps({ req, params }) {
-  const token = req.cookies.token;  // Access token from the cookie
+// Here's where the `getServerSideProps` function goes!
+export async function getServerSideProps({ params, req }) {
+  const token = req.cookies.token; // Access token from cookies
 
-  // If no token is available, redirect to login
   if (!token) {
     return {
       redirect: {
-        destination: '/login',
+        destination: '/artist/login', // Redirect to login if no token
         permanent: false,
       },
     };
   }
 
   try {
-    // Verify JWT token
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET); // Verify token
 
-    // Fetch artist data from your API or database using the artist ID from the URL params
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/artist/${params.id}`);
     if (!res.ok) {
       throw new Error(`Failed to fetch artist with ID: ${params.id}`);
@@ -61,19 +67,22 @@ export async function getServerSideProps({ req, params }) {
 
     const artist = await res.json();
 
-    return {
-      props: {
-        artist,
-        loggedInArtistId: decodedToken.artistId,  // Pass the logged-in artist's ID to the component
-      },
-    };
+    // Ensure the logged-in artist can only view/edit their own profile
+    if (decodedToken.artistId !== params.id) {
+      return {
+        redirect: {
+          destination: '/artist/login',
+          permanent: false,
+        },
+      };
+    }
+
+    return { props: { artist } };
   } catch (error) {
     console.error('Error fetching artist or verifying token:', error);
-
-    // If token is invalid or expired, redirect to login
     return {
       redirect: {
-        destination: '/login',
+        destination: '/artist/login',
         permanent: false,
       },
     };
