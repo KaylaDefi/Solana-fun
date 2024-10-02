@@ -19,12 +19,10 @@ artistSchema.pre('save', async function (next) {
   next();
 });
 
-// Method to compare passwords
 artistSchema.methods.comparePassword = async function (candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
 };
 
-// Prevent overwriting the model during hot reloads in development
 const Artist = mongoose.models.Artist || mongoose.model('Artist', artistSchema);
 
 export default Artist;

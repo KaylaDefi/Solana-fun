@@ -15,7 +15,7 @@ html, body {
 }
 
 .landing-page {
-  background-image: url('../public/images/redandblack.jpeg');
+  background-image: url('/images/fancyrb.png');
   background-size: cover;
   background-repeat: no-repeat;
   margin: 0;

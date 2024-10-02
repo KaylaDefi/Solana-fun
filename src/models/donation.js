@@ -2,8 +2,8 @@ import mongoose from 'mongoose';
 
 const donationSchema = new mongoose.Schema({
   artistId: { type: mongoose.Schema.Types.ObjectId, ref: 'Artist', required: true },
-  donor: { type: String, required: true },  // Donor's name or wallet address
-  amount: { type: Number, required: true },  // Amount donated (in SOL or currency of choice)
+  donor: { type: String, required: true },  
+  amount: { type: Number, required: true },  
   createdAt: { type: Date, default: Date.now },
 });
 

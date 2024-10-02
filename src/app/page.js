@@ -1,56 +1,16 @@
 "use client";
 
-import { useSearchParams } from 'next/navigation';
 import Head from 'next/head';
-import FeaturedArtists from '../components/Home/FeaturedArtists';
-import OngoingCompetitions from '../components/Home/OngoingCompetitions';
-import CreateAccount from '../pages/artist/create-account';
-import BattleOfTheBands from '../components/Voting/BattleOfTheBands';
-import CompetitionDetails from '../components/Voting/CompetitionDetails';
-import Profile from '../components/Artist/ArtistActions';
-import Forum from '../components/Community/Forum';
-import UserHistory from '../components/User/UserHistory';
-import Donate from '../components/Artist/Donate';
-import UploadMusic from '../components/Artist/UploadMusic';
-import Announcements from '../components/Artist/Announcements';
+import { useSession } from 'next-auth/react';  
+import FeaturedArtists from './home/FeaturedArtists';
+import OngoingCompetitions from './home/OngoingCompetitions';
 
 export default function Home() {
-  const searchParams = useSearchParams();
-  const page = searchParams.get('page');
-  const competitionId = searchParams.get('id'); 
+  const { data: session, status } = useSession();  
 
-  const renderComponent = () => {
-    switch (page) {
-      case 'create-account':
-        return <CreateAccount />;
-      case 'battle-of-the-bands':
-        return <BattleOfTheBands />;
-      case 'competition':
-        return <CompetitionDetails id={competitionId} />;
-      case 'profile':
-        return <Profile />;
-      case 'forum':
-        return <Forum />;
-      case 'user-history':
-        return <UserHistory />;
-      case 'donate':
-        return <Donate />;
-      case 'upload-music':
-        return <UploadMusic />;
-      case 'announcements':
-        return <Announcements />;
-      default:
-        return (
-          <div className="landing-page">
-            <div className="landing-page-content">
-              <h1 className="text-3xl font-bold text-center mb-6">Welcome to the Music Platform</h1>
-              <FeaturedArtists />
-              <OngoingCompetitions />
-            </div>
-          </div>
-        );
-    }
-  };
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
@@ -61,8 +21,15 @@ export default function Home() {
       </Head>
 
       <main className="p-4 space-y-8">
-        {renderComponent()}
+        <div className="landing-page">
+          <div className="landing-page-content">
+            <h1 className="text-3xl font-bold text-center mb-6">Welcome to the Music Platform</h1>
+            <FeaturedArtists />
+            <OngoingCompetitions />
+          </div>
+        </div>
       </main>
     </div>
   );
 }
+
