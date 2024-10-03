@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation'; 
-import { useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react'; 
 
 const ArtistProfileEdit = ({ artist }) => {
   const router = useRouter();
@@ -17,7 +17,7 @@ const ArtistProfileEdit = ({ artist }) => {
 
   useEffect(() => {
     if (!session) {
-      router.push('/artist/login'); 
+      router.push('/artist/login');
     }
   }, [session, router]);
 
@@ -50,6 +50,10 @@ const ArtistProfileEdit = ({ artist }) => {
     }
   };
 
+  if (!session) {
+    return <p>Loading...</p>; 
+  }
+
   return (
     <div className="container">
       <h1>Edit Profile</h1>
@@ -59,22 +63,22 @@ const ArtistProfileEdit = ({ artist }) => {
       <form onSubmit={handleSubmit} encType="multipart/form-data">
         <div>
           <label>Name</label>
-          <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
-        </div>
+          <input type="text" name="name" value={name} onChange={(e) => setName(e.target.value)} />
+         </div>
 
         <div>
           <label>Bio</label>
-          <textarea value={bio} onChange={(e) => setBio(e.target.value)}></textarea>
-        </div>
+          <textarea name="bio" value={bio} onChange={(e) => setBio(e.target.value)}></textarea>
+         </div>
 
-        <div>
-          <label>Solana Wallet Address</label>
-          <input type="text" value={solanaWallet} onChange={(e) => setSolanaWallet(e.target.value)} />
-        </div>
+         <div>
+           <label>Solana Wallet Address</label>
+           <input type="text" name="solanaWallet" value={solanaWallet} onChange={(e) => setSolanaWallet(e.target.value)} />
+         </div>
 
         <div>
           <label>Upload Profile Picture</label>
-          <input type="file" onChange={(e) => setProfilePicture(e.target.files[0])} />
+          <input type="file" name="profilePicture" onChange={(e) => setProfilePicture(e.target.files[0])} />
         </div>
 
         <button type="submit">Update Profile</button>
