@@ -11,7 +11,6 @@ const ArtistProfileEdit = ({ artist }) => {
   const [name, setName] = useState(artist?.name || '');
   const [bio, setBio] = useState(artist?.bio || '');
   const [solanaWallet, setSolanaWallet] = useState(artist?.solanaWallet || '');
-  const [profilePicture, setProfilePicture] = useState(null);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
@@ -26,21 +25,24 @@ const ArtistProfileEdit = ({ artist }) => {
     setError('');
     setSuccess('');
 
-    const formData = new FormData();
-    if (name && name !== artist.name) formData.append('name', name);
-    if (bio && bio !== artist.bio) formData.append('bio', bio);
-    if (solanaWallet && solanaWallet !== artist.solanaWallet) formData.append('solanaWallet', solanaWallet);
-    if (profilePicture) formData.append('profilePicture', profilePicture);
+    const updatedProfile = {
+      name,
+      bio,
+      solanaWallet,
+    };
 
     try {
       const response = await fetch(`/api/artist/${artist._id}`, {
         method: 'PUT',
-        body: formData,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedProfile),
       });
 
       if (response.ok) {
         setSuccess('Profile updated successfully!');
-        router.push(`/artist/${artist._id}`);
+        router.push(`/artist/dashboard`);
       } else {
         setError('Failed to update profile.');
       }
@@ -60,25 +62,34 @@ const ArtistProfileEdit = ({ artist }) => {
       {error && <p>{error}</p>}
       {success && <p>{success}</p>}
 
-      <form onSubmit={handleSubmit} encType="multipart/form-data">
+      <form onSubmit={handleSubmit}>
         <div>
           <label>Name</label>
-          <input type="text" name="name" value={name} onChange={(e) => setName(e.target.value)} />
-         </div>
+          <input
+            type="text"
+            name="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
 
         <div>
           <label>Bio</label>
-          <textarea name="bio" value={bio} onChange={(e) => setBio(e.target.value)}></textarea>
-         </div>
-
-         <div>
-           <label>Solana Wallet Address</label>
-           <input type="text" name="solanaWallet" value={solanaWallet} onChange={(e) => setSolanaWallet(e.target.value)} />
-         </div>
+          <textarea
+            name="bio"
+            value={bio}
+            onChange={(e) => setBio(e.target.value)}
+          ></textarea>
+        </div>
 
         <div>
-          <label>Upload Profile Picture</label>
-          <input type="file" name="profilePicture" onChange={(e) => setProfilePicture(e.target.files[0])} />
+          <label>Solana Wallet Address</label>
+          <input
+            type="text"
+            name="solanaWallet"
+            value={solanaWallet}
+            onChange={(e) => setSolanaWallet(e.target.value)}
+          />
         </div>
 
         <button type="submit">Update Profile</button>
