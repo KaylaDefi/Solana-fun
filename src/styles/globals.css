@@ -15,7 +15,7 @@ html, body {
 }
 
 .landing-page {
-  background-image: url('/images/redandblack.jpeg') !important;
+  background-image: url('/images/fancyrb.png');
   background-size: cover;
   background-repeat: no-repeat;
   margin: 0;
@@ -90,3 +90,4 @@ button:hover {
 .announcements a:hover {
   color: #e60000 !important;
 }
+

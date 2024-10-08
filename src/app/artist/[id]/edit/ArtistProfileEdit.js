@@ -3,8 +3,9 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation'; 
 import { useSession } from 'next-auth/react'; 
+import ChangePfp from './ChangePfp';  
 
-const ArtistProfileEdit = ({ artist }) => {
+const ArtistProfileEdit = ({ artist }) => {  
   const router = useRouter();
   const { data: session } = useSession();
 
@@ -13,6 +14,7 @@ const ArtistProfileEdit = ({ artist }) => {
   const [solanaWallet, setSolanaWallet] = useState(artist?.solanaWallet || '');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [showChangePfp, setShowChangePfp] = useState(false); 
 
   useEffect(() => {
     if (!session) {
@@ -32,7 +34,7 @@ const ArtistProfileEdit = ({ artist }) => {
     };
 
     try {
-      const response = await fetch(`/api/artist/${artist._id}`, {
+      const response = await fetch(`/api/artist/${artist._id}`, {  
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -94,6 +96,14 @@ const ArtistProfileEdit = ({ artist }) => {
 
         <button type="submit">Update Profile</button>
       </form>
+
+      <div className="mt-4">
+        <button onClick={() => setShowChangePfp(!showChangePfp)}>
+          {showChangePfp ? "Cancel" : "Change Profile Picture"}
+        </button>
+
+        {showChangePfp && <ChangePfp artistId={artist._id} />} 
+      </div>
     </div>
   );
 };
